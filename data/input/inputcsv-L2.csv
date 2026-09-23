@@ -2,4 +2,5 @@ Vlan;Description;IP Address;Netmask;Switch;Ports
 10;vlan10;;;;1-9
 20;vlan20;;;;10-19
 30;vlan30;;;;20
+100;management-vlan;192.168.100.101;255.255.255.0;;23
 10,20,30;Trunk;;;;44

@@ -15,6 +15,9 @@ if which_switch in ("2", "3"):
     hostname = input(f"What should be the hostname? (leave blank for default = L{which_switch}Switch)")
     if not hostname:
         hostname = f"L{which_switch}Switch"
+    interface_type = input(f"What is the interface type (fa / gi | leave blank for default = fa for L3, gi for L2)")
+    if not interface_type:
+        interface_type = "fa" if which_switch == "3" else "gi"
 
     # SSH credentials
     ip_address = input("What is the IP address?")
@@ -30,9 +33,9 @@ if which_switch in ("2", "3"):
     # generating config
     print(f"Generating L{which_switch} config...")
     if which_switch == "2":
-        csvToTxt.make_L2_file(input_file=filepath_input, output_file=filepath_output, hostname=hostname)
+        csvToTxt.make_L2_file(input_file=filepath_input, output_file=filepath_output, hostname=hostname, interface=interface_type)
     else:
-        csvToTxt.make_L3_file(input_file=filepath_input, output_file=filepath_output, hostname=hostname)
+        csvToTxt.make_L3_file(input_file=filepath_input, output_file=filepath_output, hostname=hostname, interface=interface_type)
     print(f"L{which_switch} config created!")
 
     # SSH config

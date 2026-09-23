@@ -3,9 +3,9 @@ import csv
 
 class CSVtoTXT():
     def __init__(self):
-        self.interface = "fa0/"
+        interface = "fa0/"
 
-    def make_L3_file(self, input_file: str, output_file: str=None, hostname: str=None):
+    def make_L3_file(self, input_file: str, output_file: str=None, hostname: str=None, interface: str="fa"):
         if not output_file:
             output_file = "cisco_commands-L3.txt"
 
@@ -34,6 +34,11 @@ class CSVtoTXT():
                 switch = line[4]
                 ports = line[5]
 
+                if switch:
+                    interface = f"{interface}{switch}/"
+                else:
+                    interface = f"{interface}0/"
+
                 if "management" in description.lower():
                     output_file.write(f"vlan {vlan_id}\n")
                     output_file.write(f"name {description}\n")
@@ -41,10 +46,11 @@ class CSVtoTXT():
                     output_file.write(f"description {description}\n")
                     output_file.write(f"ip address {ip_address} {netmask}\n")
                     output_file.write(f"no shut\n")
-                    output_file.write(f"int {self.interface}{ports}\n")
-                    output_file.write(f"switchport mode access\n")
-                    output_file.write(f"switchport access vlan {vlan_id}\n")
-                    output_file.write(f"description {description}-interface\n")
+                    if ports:
+                        output_file.write(f"int {interface}{ports}\n")
+                        output_file.write(f"switchport mode access\n")
+                        output_file.write(f"switchport access vlan {vlan_id}\n")
+                        output_file.write(f"description {description}-interface\n")
 
                 elif "trunk" in description.lower():
                     # vlans
@@ -64,7 +70,7 @@ class CSVtoTXT():
                     output_file.write(f"no shut\n")
 
                     # trunk
-                    output_file.write(f"int {self.interface}{ports}\n")
+                    output_file.write(f"int {interface}{ports}\n")
                     output_file.write(f"description {description}\n")
                     output_file.write(f"switchport trunk encapsulation dot1q\n")
                     output_file.write(f"switchport mode trunk\n")
@@ -83,9 +89,9 @@ class CSVtoTXT():
 
                     if ports:
                         if "-" in ports:
-                            output_file.write(f"int range {self.interface}{ports}\n")
+                            output_file.write(f"int range {interface}{ports}\n")
                         else:
-                            output_file.write(f"int {self.interface}{ports}\n")
+                            output_file.write(f"int {interface}{ports}\n")
                         output_file.write(f"switchport mode access\n")
                         output_file.write(f"spanning-tree portfast\n")
                         output_file.write(f"switchport access vlan {vlan_id}\n")
@@ -97,7 +103,7 @@ class CSVtoTXT():
             output_file.write(f"copy r s\n")
             output_file.write(f"\n")
 
-    def make_L2_file(self, input_file:str, output_file: str=None, hostname: str=None):
+    def make_L2_file(self, input_file:str, output_file: str=None, hostname: str=None, interface :str="gi"):
             if not output_file:
                 output_file = "cisco_commands-L2.txt"
     
@@ -126,6 +132,11 @@ class CSVtoTXT():
                     switch = line[4]
                     ports = line[5]
 
+                    if switch:
+                        interface = f"{interface}{switch}/"
+                    else:
+                        interface = f"{interface}0/"
+
                     if ip_address or netmask:
                         print(f"Line has IP config, is this L2? : {line}")
     
@@ -134,10 +145,10 @@ class CSVtoTXT():
                         output_file.write(f"name {description}\n")
                         output_file.write(f"int vlan{vlan_id}\n")
                         output_file.write(f"description {description}\n")
-                        output_file.write(f"no ip address\n")
+                        output_file.write(f"ip address {ip_address} {netmask}\n")
                         output_file.write(f"no shut\n")
                         if ports:
-                            output_file.write(f"int {self.interface}{ports}\n")
+                            output_file.write(f"int {interface}{ports}\n")
                             output_file.write(f"switchport mode access\n")
                             output_file.write(f"switchport access vlan {vlan_id}\n")
                             output_file.write(f"description {description}-interface\n")
@@ -160,7 +171,7 @@ class CSVtoTXT():
                         output_file.write(f"no shut\n")
     
                         # trunk
-                        output_file.write(f"int {self.interface}{ports}\n")
+                        output_file.write(f"int {interface}{ports}\n")
                         output_file.write(f"description {description}\n")
                         output_file.write(f"switchport trunk encapsulation dot1q\n")
                         output_file.write(f"switchport mode trunk\n")
@@ -179,9 +190,9 @@ class CSVtoTXT():
     
                         if ports:
                             if "-" in ports:
-                                output_file.write(f"int range {self.interface}{ports}\n")
+                                output_file.write(f"int range {interface}{ports}\n")
                             else:
-                                output_file.write(f"int {self.interface}{ports}\n")
+                                output_file.write(f"int {interface}{ports}\n")
                             output_file.write(f"switchport mode access\n")
                             output_file.write(f"spanning-tree portfast\n")
                             output_file.write(f"switchport access vlan {vlan_id}\n")
