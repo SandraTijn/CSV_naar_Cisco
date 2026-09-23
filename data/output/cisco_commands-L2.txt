@@ -8,7 +8,7 @@ int vlan10
 description vlan10
 no ip address
 no shut
-int range fa0/1-9
+int range gi0/1-9
 switchport mode access
 spanning-tree portfast
 switchport access vlan 10
@@ -18,7 +18,7 @@ int vlan20
 description vlan20
 no ip address
 no shut
-int range fa0/10-19
+int range gi0/0/10-19
 switchport mode access
 spanning-tree portfast
 switchport access vlan 20
@@ -28,16 +28,26 @@ int vlan30
 description vlan30
 no ip address
 no shut
-int fa0/20
+int gi0/0/0/20
 switchport mode access
 spanning-tree portfast
 switchport access vlan 30
+vlan 100
+name management-vlan
+int vlan100
+description management-vlan
+ip address 192.168.100.101 255.255.255.0
+no shut
+int gi0/0/0/0/23
+switchport mode access
+switchport access vlan 100
+description management-vlan-interface
 vlan 999
 name vlan999
 int vlan999
 description vlan999
 no shut
-int fa0/44
+int gi0/0/0/0/0/44
 description Trunk
 switchport trunk encapsulation dot1q
 switchport mode trunk

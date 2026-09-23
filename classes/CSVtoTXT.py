@@ -137,7 +137,7 @@ class CSVtoTXT():
                     else:
                         interface = f"{interface}0/"
 
-                    if ip_address or netmask:
+                    if (ip_address or netmask) and "management" not in description.lower():
                         print(f"Line has IP config, is this L2? : {line}")
     
                     if "management" in description.lower():
