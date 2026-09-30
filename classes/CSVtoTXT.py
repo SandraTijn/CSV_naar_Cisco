@@ -35,9 +35,9 @@ class CSVtoTXT():
                 ports = line[5]
 
                 if switch:
-                    interface = f"{interface}{switch}/"
+                    interface_to_use = f"{interface}{switch}/"
                 else:
-                    interface = f"{interface}0/"
+                    interface_to_use = f"{interface}0/"
 
                 if "management" in description.lower():
                     output_file.write(f"vlan {vlan_id}\n")
@@ -47,7 +47,7 @@ class CSVtoTXT():
                     output_file.write(f"ip address {ip_address} {netmask}\n")
                     output_file.write(f"no shut\n")
                     if ports:
-                        output_file.write(f"int {interface}{ports}\n")
+                        output_file.write(f"int {interface_to_use}{ports}\n")
                         output_file.write(f"switchport mode access\n")
                         output_file.write(f"switchport access vlan {vlan_id}\n")
                         output_file.write(f"description {description}-interface\n")
@@ -70,7 +70,7 @@ class CSVtoTXT():
                     output_file.write(f"no shut\n")
 
                     # trunk
-                    output_file.write(f"int {interface}{ports}\n")
+                    output_file.write(f"int {interface_to_use}{ports}\n")
                     output_file.write(f"description {description}\n")
                     output_file.write(f"switchport trunk encapsulation dot1q\n")
                     output_file.write(f"switchport mode trunk\n")
@@ -89,9 +89,9 @@ class CSVtoTXT():
 
                     if ports:
                         if "-" in ports:
-                            output_file.write(f"int range {interface}{ports}\n")
+                            output_file.write(f"int range {interface_to_use}{ports}\n")
                         else:
-                            output_file.write(f"int {interface}{ports}\n")
+                            output_file.write(f"int {interface_to_use}{ports}\n")
                         output_file.write(f"switchport mode access\n")
                         output_file.write(f"spanning-tree portfast\n")
                         output_file.write(f"switchport access vlan {vlan_id}\n")
@@ -133,9 +133,11 @@ class CSVtoTXT():
                     ports = line[5]
 
                     if switch:
-                        interface = f"{interface}{switch}/"
+                        interface_to_use = f"{interface}{switch}/"
                     else:
-                        interface = f"{interface}0/"
+                        interface_to_use = f"{interface}0/"
+
+                    print(interface_to_use)
 
                     if (ip_address or netmask) and "management" not in description.lower():
                         print(f"Line has IP config, is this L2? : {line}")
@@ -148,7 +150,7 @@ class CSVtoTXT():
                         output_file.write(f"ip address {ip_address} {netmask}\n")
                         output_file.write(f"no shut\n")
                         if ports:
-                            output_file.write(f"int {interface}{ports}\n")
+                            output_file.write(f"int {interface_to_use}{ports}\n")
                             output_file.write(f"switchport mode access\n")
                             output_file.write(f"switchport access vlan {vlan_id}\n")
                             output_file.write(f"description {description}-interface\n")
@@ -171,7 +173,7 @@ class CSVtoTXT():
                         output_file.write(f"no shut\n")
     
                         # trunk
-                        output_file.write(f"int {interface}{ports}\n")
+                        output_file.write(f"int {interface_to_use}{ports}\n")
                         output_file.write(f"description {description}\n")
                         output_file.write(f"switchport trunk encapsulation dot1q\n")
                         output_file.write(f"switchport mode trunk\n")
@@ -190,9 +192,9 @@ class CSVtoTXT():
     
                         if ports:
                             if "-" in ports:
-                                output_file.write(f"int range {interface}{ports}\n")
+                                output_file.write(f"int range {interface_to_use}{ports}\n")
                             else:
-                                output_file.write(f"int {interface}{ports}\n")
+                                output_file.write(f"int {interface_to_use}{ports}\n")
                             output_file.write(f"switchport mode access\n")
                             output_file.write(f"spanning-tree portfast\n")
                             output_file.write(f"switchport access vlan {vlan_id}\n")

@@ -32,6 +32,16 @@ int fa0/20
 switchport mode access
 spanning-tree portfast
 switchport access vlan 30
+vlan 100
+name management-vlan
+int vlan100
+description management-vlan
+ip address 192.168.100.100 255.255.255.0
+no shut
+int fa0/23
+switchport mode access
+switchport access vlan 100
+description management-vlan-interface
 vlan 999
 name vlan999
 int vlan999
